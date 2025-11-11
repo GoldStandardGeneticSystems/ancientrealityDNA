@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACTS Ultimate Ancestry Report - USER_20251110153650</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Animated Starfield */
+        .starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* Floating DNA Helix Ghost */
+        .dna-helix {
+            position: fixed;
+            top: 50%;
+            right: -100px;
+            width: 200px;
+            height: 400px;
+            opacity: 0.15;
+            z-index: 1;
+            animation: float 20s infinite ease-in-out;
+            pointer-events: none;
+        }
+        
+        @keyframes float {
+            0%, 100% { 
+                transform: translateY(-50%) translateX(0) rotate(0deg);
+            }
+            50% { 
+                transform: translateY(-50%) translateX(-50px) rotate(10deg);
+            }
+        }
+        
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Glassmorphism Header */
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+        
+        .header .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2em;
+        }
+        
+        .snp-display {
+            background: rgba(102, 126, 234, 0.2);
+            border: 1px solid rgba(102, 126, 234, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .snp-count {
+            font-size: 3em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Audio Control */
+        .audio-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .narrator-btn {
+            background: rgba(102, 126, 234, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            animation: pulse 2s infinite;
+        }
+        
+        .narrator-btn:hover {
+            background: rgba(102, 126, 234, 0.5);
+            transform: scale(1.1);
+        }
+        
+        .narrator-btn.playing {
+            animation: spin 2s linear infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(102, 126, 234, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(102, 126, 234, 0.8); }
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1em;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .tab.active {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.6);
+            color: white;
+        }
+        
+        .tab-icon {
+            font-size: 1.5em;
+            animation: shimmer-icon 2s infinite;
+        }
+        
+        @keyframes shimmer-icon {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.5); }
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Glass Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(102, 126, 234, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2);
+        }
+        
+        .glass-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .match-rank {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .match-details {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .detail-row {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .icon {
+            font-size: 1.2em;
+        }
+        
+        /* Haplogroup Display */
+        .haplogroup-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .haplogroup-card {
+            background: rgba(102, 126, 234, 0.2);
+            border: 2px solid rgba(102, 126, 234, 0.4);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .haplogroup-label {
+            font-size: 2.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .haplogroup-type {
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 10px;
+        }
+        
+        /* Story Display */
+        .story-text {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid #667eea;
+            padding: 30px;
+            border-radius: 10px;
+            line-height: 1.8;
+            font-size: 1.1em;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .story-text p {
+            margin-bottom: 20px;
+        }
+        
+        /* Historical Context */
+        .scripture-box {
+            background: rgba(118, 75, 162, 0.2);
+            border: 2px solid rgba(118, 75, 162, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #764ba2;
+        }
+        
+        .scripture-box h4 {
+            color: #f093fb;
+            margin-bottom: 15px;
+        }
+        
+        .scripture-text {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        .scripture-ref {
+            text-align: right;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        /* Health Risk Colors */
+        .risk-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .risk-badge.low {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4CAF50;
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
+        
+        .risk-badge.moderate {
+            background: rgba(255, 193, 7, 0.3);
+            color: #FFC107;
+            border: 1px solid rgba(255, 193, 7, 0.5);
+        }
+        
+        .risk-badge.high {
+            background: rgba(244, 67, 54, 0.3);
+            color: #F44336;
+            border: 1px solid rgba(244, 67, 54, 0.5);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                width: 100%;
+            }
+        }
+    
+        .pdf-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(102, 126, 234, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(102, 126, 234, 0.5);
+            border-radius: 15px;
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100;
+            border: none;
+        }
+        .pdf-btn:hover { background: rgba(102, 126, 234, 0.5); }
+        .tab-content { position: relative; }
+</style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <!-- Animated Starfield -->
+    <div class="starfield" id="starfield"></div>
+    
+    <!-- Floating DNA Helix Ghost -->
+    <div class="dna-helix">
+        <svg viewBox="0 0 200 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <linearGradient id="dnaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <path d="M 50,0 Q 150,50 50,100 Q -50,150 50,200 Q 150,250 50,300 Q -50,350 50,400" 
+                  stroke="url(#dnaGradient)" stroke-width="3" fill="none"/>
+            <path d="M 150,0 Q 50,50 150,100 Q 250,150 150,200 Q 50,250 150,300 Q 250,350 150,400" 
+                  stroke="url(#dnaGradient)" stroke-width="3" fill="none"/>
+        </svg>
+    </div>
+    
+    <!-- Narrator Control -->
+    <div class="audio-control">
+        <button class="narrator-btn" id="narratorBtn" onclick="toggleNarration()" title="British Female Narrator">
+            🔊
+        </button>
+    </div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🧬 Your Complete Ancestry Report</h1>
+            <p class="subtitle">ACTS v6.8.1 Ultimate - Powered by Ancient DNA Analysis</p>
+            <p style="margin-top: 15px; color: rgba(255,255,255,0.5);">
+                Report ID: USER_20251110153650<br>
+                Generated: 2025-11-10 15:36:50
+            </p>
+            
+            <div class="snp-display">
+                <div style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Total SNPs Analyzed</div>
+                <div class="snp-count">608,543</div>
+            </div>
+        </div>
+        
+        <!-- Tabs Navigation -->
+        <div class="tabs">
+            <div class="tab active" onclick="openTab(event, 'overview')" data-narrate="overview">
+                <span class="tab-icon">🏛️</span>
+                <span>Overview</span>
+            </div>
+            <div class="tab" onclick="openTab(event, 'haplogroups')" data-narrate="haplogroups">
+                <span class="tab-icon">🧬</span>
+                <span>Haplogroups</span>
+            </div>
+            <div class="tab" onclick="openTab(event, 'matches')" data-narrate="matches">
+                <span class="tab-icon">📊</span>
+                <span>Top Matches</span>
+            </div>
+            <div class="tab" onclick="openTab(event, 'story')" data-narrate="story">
+                <span class="tab-icon">📜</span>
+                <span>Your Story</span>
+            </div>
+            <div class="tab" onclick="openTab(event, 'historical')" data-narrate="historical">
+                <span class="tab-icon">⚔️</span>
+                <span>Historical Context</span>
+            </div>
+            <div class="tab" onclick="openTab(event, 'health')" data-narrate="health">
+                <span class="tab-icon">🏥</span>
+                <span>Health Markers</span>
+            </div>
+            <div class="tab" onclick="openTab(event, 'carrier')" data-narrate="carrier">
+                <span class="tab-icon">🧪</span>
+                <span>Carrier Status</span>
+            </div>
+            <div class="tab" onclick="openTab(event, 'forensic')" data-narrate="forensic">
+                <span class="tab-icon">👤</span>
+                <span>Physical Traits</span>
+            </div>
+        </div>
+        
+        <!-- Tab Content: Overview -->
+        <div id="overview" class="tab-content active">
+            <button class="pdf-btn" onclick="getPDF('overview', 'Overview')">📄 PDF</button>
+            <div class="glass-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">🏆 Your Foundational Backbone</h2>
+                <h3>Unknown</h3>
+                <div class="detail-row">
+                    <span class="icon">⏳</span>
+                    <span><strong>Era:</strong> Unknown</span>
+                </div>
+                <div class="detail-row">
+                    <span class="icon">⭐</span>
+                    <span><strong>Score:</strong> 0.00</span>
+                </div>
+                <div class="detail-row">
+                    <span class="icon">📋</span>
+                    <span><strong>Panel:</strong> Unknown</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab Content: Haplogroups -->
+        <div id="haplogroups" class="tab-content">
+            <button class="pdf-btn" onclick="getPDF('haplogroups', 'Haplogroups')">📄 PDF</button>
+            <h2 style="color: #667eea; margin-bottom: 20px;">🧬 Your Genetic Lineages</h2>
+            <div class="haplogroup-container">
+                <div class="haplogroup-card">
+                    <div class="haplogroup-label">J2</div>
+                    <div class="haplogroup-type">Y-DNA (Paternal Line)</div>
+                    <div style="margin-top: 10px; color: rgba(255,255,255,0.6);">
+                        Confidence: 85.0%
+                    </div>
+                </div>
+                <div class="haplogroup-card">
+                    <div class="haplogroup-label">K</div>
+                    <div class="haplogroup-type">mtDNA (Maternal Line)</div>
+                    <div style="margin-top: 10px; color: rgba(255,255,255,0.6);">
+                        Confidence: 90.0%
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab Content: Top Matches -->
+        <div id="matches" class="tab-content">
+            <button class="pdf-btn" onclick="getPDF('matches', 'Matches')">📄 PDF</button>
+            <h2 style="color: #667eea; margin-bottom: 20px;">📊 Your Top 10 Ancient Matches</h2>
+            
+        </div>
+        
+        <!-- Tab Content: Your Story -->
+        <div id="story" class="tab-content">
+            <button class="pdf-btn" onclick="getPDF('story', 'Story')">📄 PDF</button>
+            <h2 style="color: #667eea; margin-bottom: 20px;">📜 Your Ancestral Story</h2>
+            <div class="story-text" id="storyText">
+                <p>═══════════════════════════════════════════════════════════════════════════
+                              YOUR STORY
+                    The Journey Written in Your DNA
+═══════════════════════════════════════════════════════════════════════════</p>
+<p>Generated: November 10, 2025 at 03:36 PM</p>
+<p>═══════════════════════════════════════════════════════════════════════════
+                         THE HOUSE OF YOUR ANCESTRY
+═══════════════════════════════════════════════════════════════════════════</p>
+<p>Imagine your DNA as an ancient house, standing through millennia. Like any
+great structure, it has a foundation - the core framework that defines its
+character and strength. This is your BACKBONE.</p>
+<p>YOUR FOUNDATION (Primary Backbone):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+<p>🏛️  Israelite/Judahite
+    The bedrock of your genetic identity</p>
+<p>📍 Location: Megiddo, Northern Israel
+    Levant (Ancient Israel/Judah)</p>
+<p>⏳ Time Period: Iron Age IIA-B
+    800-700 BCE</p>
+<p>💪 Foundation Strength: 0.2%
+    This is how much of your genetic "house" stands on this foundation</p>
+<p>🧬 The Sample: I2062 (Iron Age Israelite)
+    Tel Megiddo Archaeological Project</p>
+<p>This is your structural core - the ancient population whose genetic signature
+forms the strongest foundation in your DNA. Think of it as the original
+builders of your genetic house, the master architects whose work still stands.</p>
+<p>═══════════════════════════════════════════════════════════════════════════
+                    THE WINGS AND COLORS OF YOUR HOUSE
+                        (Your Genetic Admixture)
+═══════════════════════════════════════════════════════════════════════════</p>
+<p>But your house is more than just a foundation. Over thousands of years,
+different peoples added their own touches:</p>
+<p>• Some built new wings and expansions
+• Others brought new architectural styles
+• Some added paint, decorations, and flourishes
+• Each generation contributed something unique</p>
+<p>This is your ADMIXTURE - the beautiful complexity that makes you, YOU.</p>
+<p>YOUR TOP 10 GENETIC CONTRIBUTORS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+<p>🏛️ #1. Israelite (Northern Kingdom)
+   Your Foundation - The Core Structure
+   
+   Contribution: 80.2% of your genetic blueprint
+   Time: Iron Age (Northern Kingdom period)
+   Place: Jezreel Valley, Israel
+   Shared Markers: 94,320 SNPs connect you to these people
+   
+   This is your genetic home - the people whose DNA forms the strongest part of who you are. When you look at ancient Israelite (Northern Kingdom) artifacts, you're looking at the work of people who are, genetically, your closest ancient relatives.</p>
+<p>🏗️ #2. Judahite (Southern Kingdom)
+   Your Main Wing - Major Addition
+   
+   Contribution: 80.2% of your genetic blueprint
+   Time: Iron Age (Southern Kingdom period)
+   Place: Judea (Yehud), Israel/Palestine
+   Shared Markers: 94,320 SNPs connect you to these people
+   
+   Almost as important as your foundation, these people contributed massively to your DNA. Your genes remember their Iron Age (Southern Kingdom period) world.</p>
+<p>🏰 #3. Steppe Pastoralists
+   Your Second Story - Significant Layer
+   
+   Contribution: 79.9% of your genetic blueprint
+   Time: Bronze Age to Iron Age
+   Place: Central Asian Steppe (Kazakhstan)
+   Shared Markers: 164,178 SNPs connect you to these people
+   
+   A major part of your ancestry. The Steppe Pastoralists left a lasting mark on your genome that persists today.</p>
+<p>🏺 #4. Israelite/Judahite
+   Important Room - Key Component
+   
+   Contribution: 58.1% of your genetic blueprint
+   Time: Iron Age IIA-B
+   Place: Levant (Ancient Israel/Judah)
+   Shared Markers: 35,807 SNPs connect you to these people
+   
+   These people were significant contributors to your genetic makeup, adding important diversity to your ancestral house.</p>
+<p>🏺 #5. Ancient Population
+   Important Room - Key Component
+   
+   Contribution: 54.5% of your genetic blueprint
+   Time: Ancient Period
+   Place: Various Regions
+   Shared Markers: 59,047 SNPs connect you to these people
+   
+   Though not your foundation, these ancient people are still major players in your genetic story.</p>
+<p>🎨 #6. Ancient Population
+   Decorative Element - Ancestral Touch
+   
+   Contribution: 54.5% of your genetic blueprint
+   Time: Ancient Period
+   Place: Various Regions
+   Shared Markers: 59,047 SNPs connect you to these people
+   
+   Like decorative flourishes on your genetic house, these Ancient Population people added subtle but important touches to who you are.</p>
+<p>🎨 #7. Ancient Population
+   Decorative Element - Ancestral Touch
+   
+   Contribution: 52.2% of your genetic blueprint
+   Time: Ancient Period
+   Place: Various Regions
+   Shared Markers: 150,211 SNPs connect you to these people
+   
+   Like decorative flourishes on your genetic house, these Ancient Population people added subtle but important touches to who you are.</p>
+<p>🎨 #8. Ancient Population
+   Decorative Element - Ancestral Touch
+   
+   Contribution: 52.1% of your genetic blueprint
+   Time: Ancient Period
+   Place: Various Regions
+   Shared Markers: 148,180 SNPs connect you to these people
+   
+   Like decorative flourishes on your genetic house, these Ancient Population people added subtle but important touches to who you are.</p>
+<p>🎨 #9. Ancient Population
+   Decorative Element - Ancestral Touch
+   
+   Contribution: 48.2% of your genetic blueprint
+   Time: Ancient Period
+   Place: Various Regions
+   Shared Markers: 149,434 SNPs connect you to these people
+   
+   Like decorative flourishes on your genetic house, these Ancient Population people added subtle but important touches to who you are.</p>
+<p>🎨 #10. Levantine
+   Decorative Element - Ancestral Touch
+   
+   Contribution: 45.9% of your genetic blueprint
+   Time: Bronze/Iron Age
+   Place: Levant (Near East)
+   Shared Markers: 150,007 SNPs connect you to these people
+   
+   Like decorative flourishes on your genetic house, these Levantine people added subtle but important touches to who you are.</p>
+<p>═══════════════════════════════════════════════════════════════════════════
+                    THE UNBROKEN THREADS OF YOUR LINEAGE
+                         (Your Haplogroups)
+═══════════════════════════════════════════════════════════════════════════</p>
+<p>While your house was being built with contributions from many peoples, two
+threads remained unbroken through time - passed down, parent to child, for
+thousands of generations:</p>
+<p>🧬 YOUR PATERNAL LINE (Y-DNA): J2
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   From your father's father's father... reaching back through time.
+   This haplogroup connects you to ancient fathers who walked the earth
+   when your primary backbone civilization flourished.</p>
+<p>🧬 YOUR MATERNAL LINE (mtDNA): K
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   From your mother's mother's mother... an unbroken chain of life.
+   This haplogroup has been passed down through countless generations,
+   surviving migrations, empires, and the sweep of history.</p>
+<p>These are your most direct genetic inheritances - the pure lines that never
+mixed, never changed, carried forward intact from ancient times to you.</p>
+<p>═══════════════════════════════════════════════════════════════════════════
+                      YOUR ANCIENT RELATIVES AND COUSINS
+                   (Ancestral Closeness Through the Ages)
+═══════════════════════════════════════════════════════════════════════════</p>
+<p>Based on your backbone analysis, here are your closest ancient relatives -
+people who, if they were alive today, would be like distant cousins:</p>
+<p>👥 Israelite (Northern Kingdom)
+   Genetic Similarity: 80.2%
+   Relationship: Close Ancestral Relative (like 5th-10th cousins)
+   Closeness: Very Close
+   Shared DNA: 94,320 genetic markers
+   
+   If you could meet these ancient people, you would be related through
+   common ancestors who lived approximately 150-300 
+   generations ago.</p>
+<p>👥 Judahite (Southern Kingdom)
+   Genetic Similarity: 80.2%
+   Relationship: Close Ancestral Relative (like 5th-10th cousins)
+   Closeness: Very Close
+   Shared DNA: 94,320 genetic markers
+   
+   If you could meet these ancient people, you would be related through
+   common ancestors who lived approximately 150-300 
+   generations ago.</p>
+<p>👥 Steppe Pastoralists
+   Genetic Similarity: 79.9%
+   Relationship: Close Ancestral Relative (like 5th-10th cousins)
+   Closeness: Very Close
+   Shared DNA: 164,178 genetic markers
+   
+   If you could meet these ancient people, you would be related through
+   common ancestors who lived approximately 150-300 
+   generations ago.</p>
+<p>👥 Israelite/Judahite
+   Genetic Similarity: 58.1%
+   Relationship: Ancestral Relative (like 10th-20th cousins)
+   Closeness: Close
+   Shared DNA: 35,807 genetic markers
+   
+   If you could meet these ancient people, you would be related through
+   common ancestors who lived approximately 300-600 
+   generations ago.</p>
+<p>👥 Ancient Population
+   Genetic Similarity: 54.5%
+   Relationship: Ancestral Relative (like 10th-20th cousins)
+   Closeness: Close
+   Shared DNA: 59,047 genetic markers
+   
+   If you could meet these ancient people, you would be related through
+   common ancestors who lived approximately 300-600 
+   generations ago.</p>
+<p>═══════════════════════════════════════════════════════════════════════════
+                          YOUR ANCESTRAL MIGRATION
+                    The Journey Your DNA Remembers
+═══════════════════════════════════════════════════════════════════════════</p>
+<p>Your DNA tells a story of movement - of people who traveled, settled, mixed,
+and created the unique genetic signature that is you. Here is the journey:</p>
+<p>CHAPTER 1: Iron Age (Northern Kingdom period)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+<p>Your ancestors among the Israelite (Northern Kingdom) lived in Jezreel Valley, Israel. This population
+contributed 80.2% to your genetic makeup. They were
+farmers, herders, and craftspeople who built cities and traded across ancient networks.</p>
+<p>Their genes flowed forward through time, mixing with other populations,
+until they reached you today - a living testament to their survival.</p>
+<p>CHAPTER 2: Iron Age (Southern Kingdom period)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+<p>Your ancestors among the Judahite (Southern Kingdom) lived in Judea (Yehud), Israel/Palestine. This population
+contributed 80.2% to your genetic makeup. They were
+farmers, herders, and craftspeople who built cities and traded across ancient networks.</p>
+<p>Their genes flowed forward through time, mixing with other populations,
+until they reached you today - a living testament to their survival.</p>
+<p>CHAPTER 3: Bronze Age to Iron Age
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+<p>Your ancestors among the Steppe Pastoralists lived in Central Asian Steppe (Kazakhstan). This population
+contributed 79.9% to your genetic makeup. They were
+farmers, herders, and craftspeople who built cities and traded across ancient networks.</p>
+<p>Their genes flowed forward through time, mixing with other populations,
+until they reached you today - a living testament to their survival.</p>
+<p>CHAPTER 4: Iron Age IIA-B
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+<p>Your ancestors among the Israelite/Judahite lived in Levant (Ancient Israel/Judah). This population
+contributed 58.1% to your genetic makeup. They were
+farmers, herders, and craftspeople who built cities and traded across ancient networks.</p>
+<p>Their genes flowed forward through time, mixing with other populations,
+until they reached you today - a living testament to their survival.</p>
+<p>CHAPTER 5: Ancient Period
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</p>
+<p>Your ancestors among the Ancient Population lived in Various Regions. This population
+contributed 54.5% to your genetic makeup. They were
+people who adapted to their environment and passed their genes forward through time.</p>
+<p>Their genes flowed forward through time, mixing with other populations,
+until they reached you today - a living testament to their survival.</p>
+<p>═══════════════════════════════════════════════════════════════════════════
+                              YOUR UNIQUE STORY
+═══════════════════════════════════════════════════════════════════════════</p>
+<p>Your DNA is not just data - it's a story. A story of survival, migration,
+love, and connection. You carry within you the genetic legacy of countless
+generations:</p>
+<p>• Your foundation was built by the Israelite/Judahite
+• Your house was expanded by migrations and mixing
+• Your lineages trace back through J2 fathers and K mothers
+• You are related to 10 major ancient populations
+• You carry 1,104,551 genetic markers from the past</p>
+<p>You are the culmination of thousands of years of human history. Every
+genetic marker in your DNA was passed down, generation after generation,
+from ancient times to today. You are living proof that your ancestors
+survived - through ice ages, migrations, plagues, wars, and the entire
+sweep of human history.</p>
+<p>Their story is your story. And now you know it.</p>
+<p>═══════════════════════════════════════════════════════════════════════════
+                          End of Your Story
+═══════════════════════════════════════════════════════════════════════════</p>
+            </div>
+        </div>
+        
+        <!-- Tab Content: Historical Context -->
+        <div id="historical" class="tab-content">
+            <button class="pdf-btn" onclick="getPDF('historical', 'Historical')">📄 PDF</button>
+            <h2 style="color: #667eea; margin-bottom: 20px;">⚔️ Historical & Biblical Context</h2>
+            
+        <div class="glass-card">
+            <h3>🧬 Y-DNA Haplogroup J2 - Paternal Origins</h3>
+            <p style="line-height: 1.8; color: rgba(255,255,255,0.9);">
+                Haplogroup J2 is associated with the spread of agriculture from the Fertile Crescent. It's common among Mediterranean, Middle Eastern, and Caucasian populations. This lineage likely originated in the Levant or Anatolia around 18,000 years ago.
+            </p>
+        </div>
+        
+        <div class="glass-card">
+            <h3>🧬 mtDNA Haplogroup K - Maternal Origins</h3>
+            <p style="line-height: 1.8; color: rgba(255,255,255,0.9);">
+                Mitochondrial haplogroup K originated in the Near East around 12,000 years ago and spread throughout Europe. It's associated with early farming communities and has significant presence in Ashkenazi Jewish populations.
+            </p>
+        </div>
+        
+        </div>
+        
+        <!-- Tab Content: Health -->
+        <div id="health" class="tab-content">
+            <button class="pdf-btn" onclick="getPDF('health', 'Health')">📄 PDF</button>
+            <h2 style="color: #667eea; margin-bottom: 20px;">🏥 Health Risk Markers</h2>
+            <div class="glass-card"><p>No health markers detected in your DNA data.</p></div>
+        </div>
+        
+        <!-- Tab Content: Carrier -->
+        <div id="carrier" class="tab-content">
+            <button class="pdf-btn" onclick="getPDF('carrier', 'Carrier')">📄 PDF</button>
+            <h2 style="color: #667eea; margin-bottom: 20px;">🧪 Carrier Status</h2>
+            <div class="glass-card"><p>No carrier conditions detected.</p></div>
+        </div>
+        
+        <!-- Tab Content: Forensic -->
+        <div id="forensic" class="tab-content">
+            <button class="pdf-btn" onclick="getPDF('forensic', 'Forensic')">📄 PDF</button>
+            <h2 style="color: #667eea; margin-bottom: 20px;">👤 Physical Trait Predictions</h2>
+            
+            <div class="glass-card forensic-card">
+                <h4>status</h4>
+                <p class="prediction">no_data</p>
+            </div>
+            
+            <div class="glass-card forensic-card">
+                <h4>forensic_profile</h4>
+                <p class="prediction">{}</p>
+            </div>
+            
+        </div>
+    </div>
+    
+    <script>
+        // Generate starfield
+        function createStarfield() {
+            const starfield = document.getElementById('starfield');
+            const numStars = 200;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                starfield.appendChild(star);
+            }
+        }
+        
+        // Tab switching
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            const tabs = document.getElementsByClassName('tab');
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+            
+            // Stop narration when changing tabs
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
+        }
+        
+        // Text-to-Speech Narration (British Female Voice)
+        let isNarrating = false;
+        
+        function toggleNarration() {
+            const btn = document.getElementById('narratorBtn');
+            
+            if (isNarrating) {
+                window.speechSynthesis.cancel();
+                btn.classList.remove('playing');
+                btn.textContent = '🔊';
+                isNarrating = false;
+            } else {
+                startNarration();
+                btn.classList.add('playing');
+                btn.textContent = '⏸️';
+                isNarrating = true;
+            }
+        }
+        
+        function startNarration() {
+            // Get active tab content
+            const activeTab = document.querySelector('.tab-content.active');
+            const textContent = activeTab.innerText;
+            
+            // Create speech synthesis
+            const utterance = new SpeechSynthesisUtterance(textContent);
+            
+            // Select British Female voice
+            const voices = window.speechSynthesis.getVoices();
+            const britishFemale = voices.find(voice => 
+                voice.lang.includes('en-GB') && voice.name.includes('Female')
+            ) || voices.find(voice => 
+                voice.lang.includes('en-GB')
+            ) || voices[0];
+            
+            utterance.voice = britishFemale;
+            utterance.rate = 0.9;
+            utterance.pitch = 1.1;
+            
+            utterance.onend = () => {
+                const btn = document.getElementById('narratorBtn');
+                btn.classList.remove('playing');
+                btn.textContent = '🔊';
+                isNarrating = false;
+            };
+            
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        // Load voices
+        window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+        };
+        
+        // Initialize
+        createStarfield();
+    
+        
+        async function getPDF(id, name) {
+            const el = document.getElementById(id);
+            const btn = event.currentTarget;
+            btn.textContent = '⏳';
+            btn.disabled = true;
+            try {
+                const canvas = await html2canvas(el, {scale: 2, backgroundColor: '#000'});
+                const {jsPDF} = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const w = 210, h = canvas.height * w / canvas.width;
+                const data = canvas.toDataURL('image/png');
+                let pos = 0, left = h;
+                pdf.addImage(data, 'PNG', 0, pos, w, h);
+                while ((left -= 297) > 0) {
+                    pdf.addPage();
+                    pdf.addImage(data, 'PNG', 0, (pos = left - h), w, h);
+                }
+                pdf.save('ACTS_' + name + '.pdf');
+            } catch(e) { alert('Failed'); }
+            btn.textContent = '📄 PDF';
+            btn.disabled = false;
+        }
+</script>
+</body>
+</html>
