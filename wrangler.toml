@@ -1,5 +1,6 @@
 name = "ancientrealitydna"
 compatibility_date = "2025-11-11"
+main = "index.html"
 
-[site]
-bucket = "./"
+[observability]
+enabled = true
