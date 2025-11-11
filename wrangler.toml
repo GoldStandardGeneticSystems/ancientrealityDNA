@@ -1,0 +1,5 @@
+name = "ancientrealitydna"
+compatibility_date = "2025-11-11"
+
+[site]
+bucket = "./"
